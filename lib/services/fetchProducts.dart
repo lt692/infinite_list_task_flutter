@@ -9,6 +9,7 @@ Future<Map> fetchProducts() async {
   if (_isInternet) {
     // Create the instance of FileCache
     FileCache fileCache = await FileCache.fromDefault();
+    //? Tarp https://rapidapi.com/ neradau užduoties atitinkančio RESTapi produktų sąrašų todėl naudosiu github'e esantį json dummy data.
     // Usage: get Json map
     data = await fileCache.getJson(
         'https://raw.githubusercontent.com/GoogleChromeLabs/sample-pie-shop/master/src/data/products.json');

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:barbora_flutter_app/models/productModel.dart';
 import 'package:barbora_flutter_app/notifiers/productListNotifier.dart';
@@ -27,13 +26,6 @@ Future<bool> loadData(BuildContext context) async {
           .take(_maxItemsCount)
           .map<Product>((item) => Product.fromJson(item))
           .toList();
-      List<Product> _data = [];
-      for (Product product in data) {
-        Uint8List _img = await fetchImage(product.id);
-        print("called");
-        product.img = _img;
-        _data.add(product);
-      }
       _productsNotifier.addAll(data);
       _productsNotifier.updateLastIndex(_maxItemsCount);
     }

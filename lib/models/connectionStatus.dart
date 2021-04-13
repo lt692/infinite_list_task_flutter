@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-enum ConnectivityStatus { wifi, mobile, offline }
+enum ConnectivityStatus { wifi, mobile, offline, none }
 
 class ConnectivityService {
   StreamController<ConnectivityStatus> connectionStatusController =

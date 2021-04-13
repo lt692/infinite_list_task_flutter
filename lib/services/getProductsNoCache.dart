@@ -5,8 +5,6 @@ Future<Response> fetchDataFromApi() async {
   //* https://raw.githubusercontent.com/GoogleChromeLabs/sample-pie-shop/master/src/data/products.json
   // Photo loading from random
   // https://picsum.photos/536/354
-  // then getting its photo link and saving it as is. Random for each 'product'.
-  // e.g : https://i.picsum.photos/id/247/536/354.jpg?hmac=86gx4ZXgaOLqCitXfaKmc6dxWKyXIC2DlscwOiP35-M
   //
   String authority = "raw.githubusercontent.com";
   String unencodedPath =

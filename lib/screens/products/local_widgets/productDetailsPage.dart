@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final Product product;
+  final double _imgHeight = 300;
   ProductDetailsPage({this.product});
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,17 @@ class ProductDetailsPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              constraints: BoxConstraints(maxHeight: 300),
+              height: _imgHeight,
+              width: double.infinity,
               child: Image.network(
-                "https://picsum.photos/536/354",
+                "https://picsum.photos/536/354?v=${product.id}",
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace stackTrace) {
+                  return Center(
+                      child: Text("Oops. Patikrinkite interneto ryšį"));
+                },
+                height: _imgHeight,
+                fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {
                     return child;
