@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-      create: (_) => ProductListNotifier(),
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProductListNotifier(),
+        ),
+      ],
+      child: MyApp(),
     ),
-  ], child: MyApp()));
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +25,6 @@ class MyApp extends StatelessWidget {
       home: StreamProvider<ConnectivityStatus>(
         initialData: ConnectivityStatus.none,
         create: (context) {
-          // Pretend this is loading data and reporting the percent loaded.
           return ConnectivityService().connectionStatusController.stream;
         },
         child: ProductsPage(),
