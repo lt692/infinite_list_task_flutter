@@ -1,12 +1,31 @@
+import 'dart:typed_data';
+
+import 'package:barbora_flutter_app/services/checkInternetStatus.dart';
 import 'package:file_cache/file_cache.dart';
 
-Future fetchProducts() async {
-  // Create the instance of FileCache
-  FileCache fileCache = await FileCache.fromDefault();
-  // Usage: get Json map
-  Map data = await fileCache.getJson(
-      'https://raw.githubusercontent.com/GoogleChromeLabs/sample-pie-shop/master/src/data/products.json');
+Future<Map> fetchProducts() async {
+  bool _isInternet = await isInternet();
+  Map data = {};
+  if (_isInternet) {
+    // Create the instance of FileCache
+    FileCache fileCache = await FileCache.fromDefault();
+    // Usage: get Json map
+    data = await fileCache.getJson(
+        'https://raw.githubusercontent.com/GoogleChromeLabs/sample-pie-shop/master/src/data/products.json');
+  }
   return data;
+}
+
+Future<Uint8List> fetchImage(var v) async {
+  bool _isInternet = await isInternet();
+  Uint8List bytes;
+  if (_isInternet) {
+    // Create the instance of FileCache
+    FileCache fileCache = await FileCache.fromDefault();
+    // Usage: get Json map
+    bytes = await fileCache.getBytes('https://picsum.photos/536/354?v=$v');
+  }
+  return bytes;
 }
 
 void cleanProductsCache() async {

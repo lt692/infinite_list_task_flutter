@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 class Product {
   String id;
   String name;
@@ -8,6 +10,8 @@ class Product {
   String url;
   String category;
   String subcategory;
+  
+  Uint8List img;
 
   Product(
       {this.id,
@@ -18,7 +22,9 @@ class Product {
       this.keywords,
       this.url,
       this.category,
-      this.subcategory});
+      this.subcategory,
+      this.img
+      });
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -30,6 +36,7 @@ class Product {
     url = json['url'];
     category = json['category'];
     subcategory = json['subcategory'];
+    img = json['img'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +50,7 @@ class Product {
     data['url'] = this.url;
     data['category'] = this.category;
     data['subcategory'] = this.subcategory;
+    data['img'] = this.img;
     return data;
   }
 }

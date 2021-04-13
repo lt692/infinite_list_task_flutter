@@ -1,5 +1,6 @@
 import 'package:barbora_flutter_app/models/productModel.dart';
 import 'package:barbora_flutter_app/notifiers/productListNotifier.dart';
+import 'package:barbora_flutter_app/screens/products/local_widgets/productDetailsPage.dart';
 import 'package:barbora_flutter_app/services/updateProductsList.dart';
 import 'package:barbora_flutter_app/services/fetchProducts.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:provider/provider.dart';
 class ProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Scaffold rebuild");
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -32,21 +32,22 @@ class BuildProductsList extends StatefulWidget {
 
 class _BuildProductsListState extends State<BuildProductsList> {
   ScrollController _scrollController = new ScrollController();
+  bool _isLoading = false;
   @override
   void initState() {
     super.initState();
     cleanProductsCache();
     loadData(context);
-    _scrollController.addListener(() {
+    _scrollController.addListener(() async {
       ScrollPosition _position = _scrollController.position;
-      if (_position.pixels == _position.maxScrollExtent) {
-        ProductListNotifier _productsNotifier =
-            Provider.of<ProductListNotifier>(context, listen: false);
-        // If not loading, then load.
-        if (_productsNotifier.loader == false) {
-          print("called LOAD on List End");
-          loadData(context);
-        }
+      if (_position.pixels == _position.maxScrollExtent && !_isLoading) {
+        setState(() {
+          _isLoading = true;
+        });
+        await loadData(context);
+        setState(() {
+          _isLoading = false;
+        });
       }
     });
   }
@@ -59,11 +60,9 @@ class _BuildProductsListState extends State<BuildProductsList> {
 
   @override
   Widget build(BuildContext context) {
-    print("BuildProductsList rebuild");
     return Expanded(
       child: Consumer<ProductListNotifier>(
         builder: (context, provider, child) {
-          print("LIST <- rebuild");
           List<Product> _products = provider.products;
           bool _last = provider.lastProduct;
           if (_products.length == 0) {
@@ -81,7 +80,7 @@ class _BuildProductsListState extends State<BuildProductsList> {
                   return Container(
                     padding: EdgeInsets.only(bottom: 70),
                     child: Center(
-                      child: Text("Daugiau duomenų nerasta"),
+                      child: Text("Daugiau produktų nerasta"),
                     ),
                   );
                 }
@@ -92,14 +91,27 @@ class _BuildProductsListState extends State<BuildProductsList> {
                 );
               }
               Product _product = _products[index];
-              return ListTile(
-                title: Text(
-                  "${_product.name}",
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                subtitle: Text(
-                  "${_product.description}",
-                  overflow: TextOverflow.ellipsis,
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ListTile(
+                  title: Text(
+                    "${_product.name}",
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  subtitle: Text(
+                    "${_product.description}",
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Text("\$ ${_product.price}"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailsPage(product: _product),
+                      ),
+                    );
+                  },
                 ),
               );
             },
