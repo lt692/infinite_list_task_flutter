@@ -5,17 +5,15 @@ import 'package:provider/provider.dart';
 
 class NetworkSensitiveWpopUp extends StatelessWidget {
   final Widget child;
-  final double opacity;
-  const NetworkSensitiveWpopUp({this.child, this.opacity = 0.5});
+  const NetworkSensitiveWpopUp({this.child});
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-    print(connectionStatus);
     if (connectionStatus == ConnectivityStatus.offline) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Patikrinkite interneto ryšį.")));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Check internet connection")));
       });
       return child;
     }

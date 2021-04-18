@@ -46,4 +46,7 @@ class Product {
     data['subcategory'] = this.subcategory;
     return data;
   }
+
+  Product.loading() : this(name: '...', price: "0", description:"...");
+  bool get isLoading => name == '...';
 }

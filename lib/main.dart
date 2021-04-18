@@ -1,18 +1,25 @@
 import 'package:barbora_flutter_app/models/connectionStatus.dart';
 import 'package:barbora_flutter_app/notifiers/productListNotifier.dart';
-import 'package:barbora_flutter_app/screens/products/productsPage.dart';
+import 'package:barbora_flutter_app/v2/models/productsModel.dart';
+import 'package:barbora_flutter_app/widgets/restartApp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: unused_import
+import 'package:barbora_flutter_app/screens/products/productsPage.dart';
+// ignore: unused_import
+import 'package:barbora_flutter_app/v2/screens/products/products.dart';
+
 void main() {
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => ProductListNotifier(),
-        ),
-      ],
-      child: MyApp(),
+    RestartWidget(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ProductsModel()),
+          ChangeNotifierProvider(create: (_) => ProductListNotifier()),
+        ],
+        child: MyApp(),
+      ),
     ),
   );
 }
@@ -20,14 +27,14 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Barbora',
-      home: StreamProvider<ConnectivityStatus>(
-        initialData: ConnectivityStatus.none,
-        create: (context) {
-          return ConnectivityService().connectionStatusController.stream;
-        },
-        child: ProductsPage(),
+    return StreamProvider<ConnectivityStatus>(
+      initialData: ConnectivityStatus.none,
+      create: (context) {
+        return ConnectivityService().connectionStatusController.stream;
+      },
+      child: MaterialApp(
+        title: 'Barbora',
+        home: Products(),
       ),
     );
   }

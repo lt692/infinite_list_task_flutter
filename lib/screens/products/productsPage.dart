@@ -1,8 +1,10 @@
 import 'package:barbora_flutter_app/models/productModel.dart';
 import 'package:barbora_flutter_app/notifiers/productListNotifier.dart';
 import 'package:barbora_flutter_app/screens/products/local_widgets/productDetailsPage.dart';
+// ignore: unused_import
 import 'package:barbora_flutter_app/services/fetchProducts.dart';
 import 'package:barbora_flutter_app/services/updateProductsList.dart';
+import 'package:barbora_flutter_app/v2/screens/products/products.dart';
 import 'package:barbora_flutter_app/widgets/networkSensitive.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,13 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Product list"),
+        title: Text("Product list V1"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "version",
+        child: Text("V2"),
+        onPressed: () => Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) => Products()), (_) => false),
       ),
       body: Column(
         children: [
@@ -87,7 +95,7 @@ class _BuildProductsListState extends State<BuildProductsList> {
                     return Container(
                       padding: EdgeInsets.only(bottom: 70),
                       child: Center(
-                        child: Text("Daugiau produktų nerasta"),
+                        child: Text("No more products to load"),
                       ),
                     );
                   }
